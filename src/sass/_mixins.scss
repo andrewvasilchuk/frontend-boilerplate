@@ -1,0 +1,175 @@
+// Media
+@mixin md() {
+  @media (min-width: map-get($map: $grid-breakpoints, $key: md)) {
+    @content;
+  }
+}
+
+@mixin lg() {
+  @media (min-width: map-get($map: $grid-breakpoints, $key: lg)) {
+    @content;
+  }
+}
+
+@mixin xl() {
+  @media (min-width: map-get($map: $grid-breakpoints, $key: xl)) {
+    @content;
+  }
+}
+
+@mixin from-xs-to-lg() {
+  /* stylelint-disable at-rule-empty-line-before, block-closing-brace-newline-after */
+  @if $is-em-media {
+    // Do some stuff
+  } @else {
+    @media (min-width: map-get($map: $grid-breakpoints, $key: xs)) and (max-width: map-get($map: $grid-breakpoints, $key: lg) - 0.02px) {
+      @content;
+    }
+  }
+  /* stylelint-enable */
+}
+
+@mixin from-xs-to-md() {
+  /* stylelint-disable at-rule-empty-line-before, block-closing-brace-newline-after */
+  @if $is-em-media {
+    // Do some job
+  } @else {
+    @media (min-width: map-get($map: $grid-breakpoints, $key: xs)) and (max-width: map-get($map: $grid-breakpoints, $key: md) - 0.02px) {
+      @content;
+    }
+  }
+  /* stylelint-enable */
+}
+
+@mixin from-md-to-lg() {
+  /* stylelint-disable at-rule-empty-line-before, block-closing-brace-newline-after */
+  @if $is-em-media {
+    // Do some job
+  } @else {
+    @media (min-width: map-get($map: $grid-breakpoints, $key: md)) and (max-width: map-get($map: $grid-breakpoints, $key: lg) - 0.02px) {
+      @content;
+    }
+  }
+  /* stylelint-enable */
+}
+
+// Placeholder
+@mixin input-placeholder {
+  &:-moz-placeholder {
+    @content;
+  }
+  /* stylelint-disable-next-line no-descending-specificity */
+  &::-moz-placeholder {
+    @content;
+  }
+  /* stylelint-disable-next-line no-descending-specificity */
+  &:-ms-input-placeholder {
+    @content;
+  }
+  /* stylelint-disable-next-line no-descending-specificity */
+  &::-webkit-input-placeholder {
+    @content;
+  }
+}
+
+// Centering
+@mixin center($position) {
+  position: absolute;
+  /* stylelint-disable at-rule-empty-line-before, block-closing-brace-newline-after */
+  @if ($position == "vertical") {
+    top: 50%;
+    transform: translateY(-50%);
+  } @else if($position == "horizontal") {
+    left: 50%;
+    transform: translate(-50%);
+  } @else if($position == "both") {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  /* stylelint-enable */
+}
+
+// REM
+@function rem($size, $base: 16px) {
+  $remSize: $size / $base;
+
+  @return #{$remSize}rem;
+}
+
+// EM
+@function em($size, $base: 16px) {
+  $emSize: $size / $base;
+
+  @return #{$emSize}em;
+}
+
+// Fonts
+@function str-replace($string, $search, $replace: "") {
+  $index: str-index($string, $search);
+
+  @if $index {
+    @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+  }
+
+  @return $string;
+}
+
+@mixin font-face($name, $path, $weight: null, $style: null, $extensions: eot woff2 woff ttf svg) {
+  $src: null;
+  $mods: (eot: "?#iefix", svg: "#" + str-replace($name, " ", "_"));
+  $formats: (otf: "opentype", ttf: "truetype");
+
+  @each $ext in $extensions {
+    $mod: if(map-has-key($mods, $ext), $ext + map-get($mods, $ext), $ext);
+    $format: if(map-has-key($formats, $ext), map-get($formats, $ext), $ext);
+    $src: append($src, url(quote($path + "." + $mod)) format(quote($format)), comma);
+  }
+
+  @font-face {
+    font: {
+      family: quote($name);
+      style: $style;
+      weight: $weight;
+    }
+    src: $src;
+  }
+}
+
+// Sizing
+@mixin box($width, $height: $width) {
+  width: $width;
+  height: $height;
+}
+
+// Positioning
+@mixin position($position, $top: null, $right: null, $bottom: null, $left: null) {
+  position: $position;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+}
+
+@mixin absolute($args...) {
+  @include position(absolute, $args...);
+}
+
+@mixin relative($args...) {
+  @include position(relative, $args...);
+}
+
+@mixin fixed($args...) {
+  @include position(fixed, $args...);
+}
+
+@mixin reset-list() {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+@mixin reset-button() {
+  background-color: transparent;
+  border-width: 0;
+}

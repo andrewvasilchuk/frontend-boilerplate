@@ -1,0 +1,40 @@
+body {
+  text-rendering: optimizeLegibility;
+  background-color: #fff;
+  -webkit-font-smoothing: antialiased;
+}
+
+.svg-icon {
+  display: inline-block;
+  vertical-align: middle;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+
+html {
+  -ms-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+a {
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+main {
+  display: block;
+}
+
+p {
+	margin-top: 0;
+}

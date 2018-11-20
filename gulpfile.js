@@ -73,6 +73,21 @@ gulp.task("purifycss", () => {
     .pipe(gulp.dest("dist/css"));
 });
 
+// Scripts
+gulp.task("scripts", () => {
+  return gulp
+    .src("src/js/**/*.js")
+    .pipe(
+      webpack(require("./webpack/webpack.dev.js"), compiler, function(
+        err,
+        stats
+      ) {
+        /* Use stats to do more things if needed */
+      })
+    )
+    .pipe(gulp.dest("dist/js"));
+});
+
 // Watchers
 gulp.task("watch", () => {
   gulp.watch("src/pug/**/*", gulp.series("pug"));
@@ -84,6 +99,8 @@ gulp.task("watch", () => {
   gulp.watch("src/img/**/*.*", gulp.series("img:dev"));
 
   gulp.watch("src/img/icons/svg/*.svg", gulp.series("svgSprite"));
+
+  gulp.watch("src/js/**/*.js", gulp.series("scripts"));
 });
 
 // Fonts

@@ -6,9 +6,13 @@ const gulp = require("gulp"),
   bs = require("browser-sync").create(),
   fs = require("fs"),
   argv = require("yargs").argv,
-  ftp = require("vinyl-ftp");
+  ftp = require("vinyl-ftp"),
+  webpack = require("webpack-stream"),
+  compiler = require("webpack");
 
 let isProduction;
+
+const ftpCredentials = JSON.parse(fs.readFileSync("./ftp.json"));
 
 console.log(p);
 

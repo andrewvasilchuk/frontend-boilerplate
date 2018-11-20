@@ -12,8 +12,6 @@ const gulp = require("gulp"),
 
 let isProduction;
 
-const ftpCredentials = JSON.parse(fs.readFileSync("./ftp.json"));
-
 console.log(p);
 
 // Remove build directory

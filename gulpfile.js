@@ -4,7 +4,6 @@ const gulp = require("gulp"),
   p = require("gulp-load-plugins")(),
   del = require("del"),
   bs = require("browser-sync").create(),
-  autoprefixer = require("autoprefixer"),
   fs = require("fs"),
   argv = require("yargs").argv,
   ftp = require("vinyl-ftp");
@@ -43,18 +42,6 @@ gulp.task("pug", () => {
     .on("end", bs.reload);
 });
 
-// Styles
-let postCSSPlugins = [
-  autoprefixer({
-    cascade: false,
-    flexbox: false
-  }),
-  require("css-mqpacker")({
-    sort: true
-  }),
-  require("cssnano")({zindex: false})
-];
-
 gulp.task("styles:dev", () => {
   return gulp
     .src("src/sass/**/*.{sass,scss}")
@@ -70,7 +57,7 @@ gulp.task("styles:build", () => {
   return gulp
     .src("src/sass/**/*.{sass,scss}")
     .pipe(p.sass().on("error", p.sass.logError))
-    .pipe(p.postcss(postCSSPlugins))
+    .pipe(p.postcss())
     .pipe(gulp.dest("dist/css"));
 });
 
@@ -134,7 +121,7 @@ gulp.task("img:build", () => {
             },
             {
               cleanupListOfValues: {
-                floatPrecision: 0
+                floatPrecision: 2
               }
             },
             { removeTitle: false }
@@ -172,7 +159,7 @@ gulp.task("svgSprite", () => {
             plugins: [
               {
                 cleanupListOfValues: {
-                  floatPrecision: 0
+                  floatPrecision: 2
                 }
               },
               { removeXMLNS: true },
@@ -230,7 +217,7 @@ gulp.task(
   "dev",
   gulp.series(
     // "clean",
-    gulp.parallel("styles:dev", "pug", "fonts", "img:dev", "svgSprite")
+    gulp.parallel("styles:dev", "pug", "fonts", "img:dev", "svgSprite", "scripts")
   )
 );
 

@@ -9,7 +9,8 @@ const gulp = require("gulp"),
   ftp = require("vinyl-ftp"),
   webpack = require("webpack-stream"),
   compiler = require("webpack"),
-  utils = require("./gulp/utils");
+  utils = require("./gulp/utils"),
+  constants = require("./gulp/constants");
 
 let isProduction;
 
@@ -18,6 +19,10 @@ console.log(p);
 // Remove build directory
 gulp.task("clean", () => {
   return del(["dist"]);
+});
+
+gulp.task("clean:css", () => {
+  return del(["dist/css/*.css", "!dist/css/build.css"]);
 });
 
 // Pug
@@ -67,16 +72,35 @@ gulp.task("styles:build", () => {
     .pipe(gulp.dest("dist/css"));
 });
 
-gulp.task("purifycss", () => {
+gulp.task("purifycss:libs", () => {
   return gulp
-    .src("dist/css/*.css")
+    .src(["dist/css/*.css", "!dist/css/main.css"])
     .pipe(
-      p.purifycss(["dist/js/*.js", "dist/*.html"], {
-        info: true,
-        rejected: true
+      p.purifycss(["dist/js/*.js", "dist/*.html"], constants.PURIFY_CSS_OPTIONS)
+    )
+    .pipe(
+      p.uncss({
+        html: ["dist/**/*.html"],
+        ignore: []
       })
     )
     .pipe(gulp.dest("dist/css"));
+});
+
+gulp.task("purifycss:source", () => {
+  return gulp
+    .src("dist/css/main.css")
+    .pipe(
+      p.purifycss(["dist/js/*.js", "dist/*.html"], constants.PURIFY_CSS_OPTIONS)
+    )
+    .pipe(gulp.dest("dist/css"));
+});
+
+gulp.task("concat:css", function() {
+  return gulp
+    .src("dist/css/*.css")
+    .pipe(p.concatCss("dist/css/build.css", { rebaseUrls: false }))
+    .pipe(gulp.dest("./"));
 });
 
 // Scripts
@@ -156,15 +180,18 @@ gulp.task("img:build", () => {
 });
 
 gulp.task("crop", () => {
-  return gulp.src("src/img/crop/*.*")
-    .pipe(p.imageResize({
-      width: argv.width,
-      height: argv.height,
-      crop: Boolean(argv.width && argv.height),
-      upscale: true,
-      noProfile: true
-    }))
-    .pipe(p.rename({suffix: `_${argv.width}`}))
+  return gulp
+    .src("src/img/crop/*.*")
+    .pipe(
+      p.imageResize({
+        width: argv.width,
+        height: argv.height,
+        crop: Boolean(argv.width && argv.height),
+        upscale: true,
+        noProfile: true
+      })
+    )
+    .pipe(p.rename({ suffix: `_${argv.width}` }))
     .pipe(gulp.dest("src/img/cropped"));
 });
 
@@ -235,12 +262,25 @@ gulp.task("serve", function() {
   });
 });
 
+// Build:css
+gulp.task(
+  "build:css",
+  gulp.series("purifycss:libs", "purifycss:source", "concat:css", "clean:css")
+);
+
 // Dev
 gulp.task(
   "dev",
   gulp.series(
     // "clean",
-    gulp.parallel("styles:dev", "pug", "fonts", "img:dev", "svgSprite", "scripts")
+    gulp.parallel(
+      "styles:dev",
+      "pug",
+      "fonts",
+      "img:dev",
+      "svgSprite",
+      "scripts"
+    )
   )
 );
 
@@ -249,7 +289,11 @@ gulp.task(
   "build",
   gulp.series(
     "clean",
-    () => new Promise(resolve => {isProduction = true; resolve();}),
+    () =>
+      new Promise(resolve => {
+        isProduction = true;
+        resolve();
+      }),
     gulp.parallel("styles:build", "pug", "fonts", "img:build", "svgSprite")
   )
 );

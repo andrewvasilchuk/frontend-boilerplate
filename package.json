@@ -52,8 +52,8 @@
   "scripts": {
     "build:scripts": "webpack --config webpack/webpack.prod.js",
     "stylelint": "npx stylelint src/sass/**/*.scss --fix",
-    "build": "gulp build && npm run build:scripts && gulp purifycss",
-    "deploy": "gulp build && npm run build:scripts && gulp purifycss && gulp deploy",
+    "build": "gulp build && npm run build:scripts && gulp build:css",
+    "deploy": "npm run build && gulp deploy",
     "scripts:deploy": "npm run dev && gulp deploy",
     "webpack:stats": "webpack --profile --json > webpack-stats.json"
   },

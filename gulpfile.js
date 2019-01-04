@@ -8,7 +8,8 @@ const gulp = require("gulp"),
   argv = require("yargs").argv,
   ftp = require("vinyl-ftp"),
   webpack = require("webpack-stream"),
-  compiler = require("webpack");
+  compiler = require("webpack"),
+  utils = require("./gulp/utils");
 
 let isProduction;
 
@@ -21,13 +22,16 @@ gulp.task("clean", () => {
 
 // Pug
 gulp.task("pug", () => {
+  const jsonFiles = {};
+  utils.readJsonFilesToObject("src/pug/data/", jsonFiles);
+
   return gulp
     .src("src/pug/**/!(_)*.pug")
     .pipe(
       p.pug({
         locals: {
           isProduction,
-          // : JSON.parse(fs.readFileSync("src/pug/data/.json", "utf8")),
+          ...jsonFiles
         }
       })
     )

@@ -13,7 +13,7 @@ module.exports = {
   output: {
     path: `${PATHS.dist}/js`,
     filename: "[name].js",
-    chunkFilename: "js/[name].bundle.js"
+    chunkFilename: "[name].bundle.js"
   },
   module: {
     rules: [

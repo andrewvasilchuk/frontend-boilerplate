@@ -267,7 +267,7 @@ gulp.task(
 gulp.task(
   "dev",
   gulp.series(
-    // "clean",
+    "clean",
     gulp.parallel(
       "styles:dev",
       "pug",

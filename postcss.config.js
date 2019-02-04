@@ -7,6 +7,6 @@ module.exports = {
     ["css-mqpacker"]: {
       sort: true
     },
-    ["cssnano"]: { zindex: false }
+    cssnano: { zindex: false }
   }
 };

@@ -8,6 +8,10 @@ const PATHS = {
   dist: path.resolve(process.cwd(), "dist")
 };
 
+const pages = {
+  index: ["index"]
+};
+
 module.exports = merge(common, {
   mode: "production",
   optimization: {
@@ -16,11 +20,11 @@ module.exports = merge(common, {
       minChunks: 2
     }
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      filename: `${PATHS.dist}/index.html`,
-      template: `${PATHS.dist}/index.html`,
-      chunks: ["index"]
-    })
-  ],
+  plugins: Object.keys(pages).map(page => {
+    return new HtmlWebpackPlugin({
+      filename: `${PATHS.dist}/${page}.html`,
+      template: `${PATHS.dist}/${page}.html`,
+      chunks: pages[page].concat(["common"])
+    });
+  })
 });

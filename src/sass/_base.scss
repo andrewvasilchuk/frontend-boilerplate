@@ -1,7 +1,15 @@
+html {
+  -ms-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
 body {
-  text-rendering: optimizeLegibility;
-  background-color: #fff;
+  font-family: $base-font-family;
+  background-color: $base-bg-color;
   -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .svg-icon {
@@ -12,14 +20,18 @@ body {
   fill: currentColor;
 }
 
-html {
-  -ms-text-size-adjust: 100%;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+a,
+button {
+  transition: color $default-transition-time, background-color $default-transition-time, border-color $default-transition-time, box-shadow $default-transition-time;
 }
 
-html,
-body {
-  height: 100%;
+.custom-scrollbar::-webkit-scrollbar {
+  width: rem(6px);
+  height: rem(6px);
+}
+
+p {
+  margin-top: 0;
 }
 
 a {
@@ -29,12 +41,4 @@ a {
 img {
   max-width: 100%;
   vertical-align: middle;
-}
-
-main {
-  display: block;
-}
-
-p {
-	margin-top: 0;
 }

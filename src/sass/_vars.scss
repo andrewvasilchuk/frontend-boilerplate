@@ -1,5 +1,8 @@
-$primary-color: null;
-$secondary-color: null;
+$color-primary: null;
+$color-secondary: null;
 $grid-breakpoints: (xs: 0, /*sm: 576px,*/ /*md: 768px,*/ lg: 992px, xl: 1200px);
 $container-max-widths: (/*sm: 540px,*/ /*md: 720px,*/ lg: 960px, xl: 1140px);
 $is-em-media: false;
+$base-font-family: sans-serif;
+$base-bg-color: #fff;
+$default-transition-time: 0.4s;

@@ -7,13 +7,13 @@ const PATHS = {
 
 module.exports = {
   entry: {
-    common: `${PATHS.src}/js/index`,
+    common: `${PATHS.src}/js/common`,
     index: `${PATHS.src}/js/index`
   },
   output: {
-    path: `${PATHS.dist}/js`,
-    filename: "[name].js",
-    chunkFilename: "[name].bundle.js"
+    path: `${PATHS.dist}`,
+    filename: "js/[name].js",
+    chunkFilename: "js/[name].bundle.js"
   },
   module: {
     rules: [

@@ -27,16 +27,17 @@ gulp.task("clean:css", () => {
 
 // Pug
 gulp.task("pug", () => {
-  const jsonFiles = {};
-  utils.readJsonFilesToObject("src/pug/data/", jsonFiles);
+  const dataFiles = {};
+  utils.readFilesToObject("src/pug/data/", dataFiles);
 
   return gulp
     .src("src/pug/**/!(_)*.pug")
+    .pipe(p.changed("dist", { extension: ".html" }))
     .pipe(
       p.pug({
         locals: {
           isProduction,
-          ...jsonFiles
+          ...dataFiles
         }
       })
     )
@@ -55,28 +56,28 @@ gulp.task("pug", () => {
 
 gulp.task("styles:dev", () => {
   return gulp
-    .src("src/sass/**/*.{sass,scss}")
+    .src(constants.SASS_GLOB)
     .pipe(p.sourcemaps.init())
     .pipe(p.plumber())
-    .pipe(p.sass().on("error", p.sass.logError))
+    .pipe(p.sass(constants.SASS_OPTIONS).on("error", p.sass.logError))
     .pipe(p.sourcemaps.write("."))
-    .pipe(gulp.dest("dist/css"))
-    .pipe(bs.reload({ stream: true }));
+    .pipe(gulp.dest(constants.SASS_OUTPUT_PATH))
+    .pipe(bs.stream());
 });
 
 gulp.task("styles:build", () => {
   return gulp
-    .src("src/sass/**/*.{sass,scss}")
-    .pipe(p.sass().on("error", p.sass.logError))
+    .src(constants.SASS_GLOB)
+    .pipe(p.sass(constants.SASS_OPTIONS).on("error", p.sass.logError))
     .pipe(p.postcss())
-    .pipe(gulp.dest("dist/css"));
+    .pipe(gulp.dest(constants.SASS_OUTPUT_PATH));
 });
 
 gulp.task("purifycss:libs", () => {
   return gulp
     .src(["dist/css/*.css", "!dist/css/main.css"])
     .pipe(
-      p.purifycss(["dist/js/*.js", "dist/*.html"], constants.PURIFY_CSS_OPTIONS)
+      p.purifycss(constants.PURIFY_CSS_CONTENT, constants.PURIFY_CSS_OPTIONS)
     )
     .pipe(
       p.uncss({
@@ -84,26 +85,26 @@ gulp.task("purifycss:libs", () => {
         ignore: []
       })
     )
-    .pipe(gulp.dest("dist/css"));
+    .pipe(gulp.dest(constants.SASS_OUTPUT_PATH));
 });
 
 gulp.task("purifycss:source", () => {
   return gulp
     .src("dist/css/main.css")
     .pipe(
-      p.purifycss(["dist/js/*.js", "dist/*.html"], constants.PURIFY_CSS_OPTIONS)
+      p.purifycss(constants.PURIFY_CSS_CONTENT, constants.PURIFY_CSS_OPTIONS)
     )
-    .pipe(gulp.dest("dist/css"));
+    .pipe(gulp.dest(constants.SASS_OUTPUT_PATH));
 });
 
 gulp.task("concat:css", function() {
   return gulp
     .src("dist/css/*.css")
     .pipe(p.concatCss("dist/css/build.css", { rebaseUrls: false }))
+    .pipe(p.cleanCss())
     .pipe(gulp.dest("./"));
 });
 
-// Scripts
 gulp.task("scripts", () => {
   return gulp
     .src("src/js/**/*.js")
@@ -118,7 +119,6 @@ gulp.task("scripts", () => {
     .pipe(gulp.dest("dist/js"));
 });
 
-// Watchers
 gulp.task("watch", () => {
   gulp.watch("src/pug/**/*", gulp.series("pug"));
 
@@ -133,12 +133,10 @@ gulp.task("watch", () => {
   gulp.watch("src/js/**/*.js", gulp.series("scripts"));
 });
 
-// Fonts
 gulp.task("fonts", () => {
   return gulp.src("src/fonts/**/*.*").pipe(gulp.dest("dist/fonts"));
 });
 
-// Img
 gulp.task("img:dev", () => {
   return gulp.src("src/img/**/*.*").pipe(gulp.dest("dist/img"));
 });
@@ -253,7 +251,6 @@ gulp.task("deploy", () => {
     .pipe(conn.dest(folder));
 });
 
-// Browsersync
 gulp.task("serve", function() {
   bs.init({
     server: {
@@ -262,13 +259,11 @@ gulp.task("serve", function() {
   });
 });
 
-// Build:css
 gulp.task(
   "build:css",
   gulp.series("purifycss:libs", "purifycss:source", "concat:css", "clean:css")
 );
 
-// Dev
 gulp.task(
   "dev",
   gulp.series(
@@ -284,7 +279,6 @@ gulp.task(
   )
 );
 
-// Build
 gulp.task(
   "build",
   gulp.series(
@@ -298,5 +292,4 @@ gulp.task(
   )
 );
 
-// Default task
 gulp.task("default", gulp.series("dev", gulp.parallel("watch", "serve")));

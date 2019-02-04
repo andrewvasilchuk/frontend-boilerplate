@@ -1,4 +1,3 @@
-// Media
 @mixin md() {
   @media (min-width: map-get($map: $grid-breakpoints, $key: md)) {
     @content;
@@ -18,7 +17,6 @@
 }
 
 @mixin from-xs-to-lg() {
-  /* stylelint-disable at-rule-empty-line-before, block-closing-brace-newline-after */
   @if $is-em-media {
     // Do some stuff
   } @else {
@@ -26,85 +24,64 @@
       @content;
     }
   }
-  /* stylelint-enable */
 }
 
-@mixin from-xs-to-md() {
-  /* stylelint-disable at-rule-empty-line-before, block-closing-brace-newline-after */
+@mixin from-lg-to-xl() {
   @if $is-em-media {
-    // Do some job
+    // Do some stuff
   } @else {
-    @media (min-width: map-get($map: $grid-breakpoints, $key: xs)) and (max-width: map-get($map: $grid-breakpoints, $key: md) - 0.02px) {
+    @media (min-width: map-get($map: $grid-breakpoints, $key: lg)) and (max-width: map-get($map: $grid-breakpoints, $key: xl) - 0.02px) {
       @content;
     }
   }
-  /* stylelint-enable */
 }
 
-@mixin from-md-to-lg() {
-  /* stylelint-disable at-rule-empty-line-before, block-closing-brace-newline-after */
-  @if $is-em-media {
-    // Do some job
-  } @else {
-    @media (min-width: map-get($map: $grid-breakpoints, $key: md)) and (max-width: map-get($map: $grid-breakpoints, $key: lg) - 0.02px) {
-      @content;
-    }
-  }
-  /* stylelint-enable */
-}
-
-// Placeholder
 @mixin input-placeholder {
-  &:-moz-placeholder {
-    @content;
-  }
-  /* stylelint-disable-next-line no-descending-specificity */
   &::-moz-placeholder {
     @content;
   }
-  /* stylelint-disable-next-line no-descending-specificity */
-  &:-ms-input-placeholder {
+
+  &::-webkit-input-placeholder {
     @content;
   }
-  /* stylelint-disable-next-line no-descending-specificity */
-  &::-webkit-input-placeholder {
+
+  &:-moz-placeholder {
+    @content;
+  }
+
+  &:-ms-input-placeholder {
     @content;
   }
 }
 
-// Centering
 @mixin center($position) {
   position: absolute;
-  /* stylelint-disable at-rule-empty-line-before, block-closing-brace-newline-after */
+
   @if ($position == "vertical") {
     top: 50%;
     transform: translateY(-50%);
   } @else if($position == "horizontal") {
     left: 50%;
-    transform: translate(-50%);
+    transform: translateX(-50%);
   } @else if($position == "both") {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
   }
-  /* stylelint-enable */
 }
 
-// REM
 @function rem($size, $base: 16px) {
   $remSize: $size / $base;
 
   @return #{$remSize}rem;
 }
 
-// EM
 @function em($size, $base: 16px) {
   $emSize: $size / $base;
 
   @return #{$emSize}em;
 }
 
-// Fonts
 @function str-replace($string, $search, $replace: "") {
   $index: str-index($string, $search);
 
@@ -136,13 +113,11 @@
   }
 }
 
-// Sizing
 @mixin box($width, $height: $width) {
   width: $width;
   height: $height;
 }
 
-// Positioning
 @mixin position($position, $top: null, $right: null, $bottom: null, $left: null) {
   position: $position;
   top: $top;
@@ -163,13 +138,38 @@
   @include position(fixed, $args...);
 }
 
+@mixin sticky($args...) {
+  @include position(sticky, $args...);
+}
+
 @mixin reset-list() {
-  padding: 0;
-  margin: 0;
+  padding-left: 0;
+  margin: {
+    top: 0;
+    bottom: 0;
+  }
   list-style: none;
 }
 
 @mixin reset-button() {
   background-color: transparent;
   border-width: 0;
+}
+
+@mixin box-shadow($color) {
+  box-shadow: $default-box-shadow rgba($color, 0.25);
+}
+
+@mixin row() {
+  margin: {
+    right: -$grid-gutter-width / 2;
+    left: -$grid-gutter-width / 2;
+  }
+}
+
+@mixin col() {
+  padding: {
+    right: $grid-gutter-width / 2;
+    left: $grid-gutter-width / 2;
+  }
 }

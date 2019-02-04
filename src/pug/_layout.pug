@@ -3,18 +3,24 @@ include _mixins
 block variables
 
 doctype html
-html(lang="en")
+html(
+  lang="en"
+  )
   head
 
     title= pageTitle
 
     meta(charset="utf-8")
-    meta(name="viewport", content="width=device-width, initial-scale=1, shrink-to-fit=no")
-    meta(http-equiv="x-ua-compatible", content="ie=edge")
-    meta(name="keywords", content)
-    meta(name="theme-color", content="#ffffff")
+    meta(name="viewport"content="width=device-width, initial-scale=1, shrink-to-fit=no")
+    meta(http-equiv="x-ua-compatible"content="ie=edge")
+    meta(name="keywords"content)
+    meta(name="theme-color"content="#004a83")
 
-    link(rel="stylesheet" href="css/main.css")
+    if isProduction
+      link(rel="stylesheet" href="css/build.css")
+    else
+      link(rel="stylesheet" href="css/libs.css")
+      link(rel="stylesheet" href="css/main.css")
 
     block styles
 

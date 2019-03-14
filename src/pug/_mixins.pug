@@ -2,5 +2,5 @@ mixin link(name = "", href = "#")
   a(href=href)&attributes(attributes)= name
 
 mixin icon(id, path = "img/icons/svg/sprite.symbol.svg")
-  svg(class="svg-icon", aria-hidden="true")&attributes(attributes)
+  svg(class="svg-icon" aria-hidden="true")&attributes(attributes)
     use(xlink:href=`${path}#${id}`)

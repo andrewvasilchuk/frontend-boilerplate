@@ -1,6 +1,11 @@
 const fs = require("fs");
 const path = require("path");
 
+function requireUncached(module) {
+  delete require.cache[require.resolve(module)];
+  return require(module);
+}
+
 function readFilesToObject(dirname, obj) {
   let files = fs.readdirSync(dirname);
 
@@ -13,7 +18,7 @@ function readFilesToObject(dirname, obj) {
 
     switch (fileExtension) {
       case "js":
-        obj[fileName] = require(path.resolve(dirname + file));
+        obj[fileName] = requireUncached(path.resolve(dirname + file));
         break;
       case "json":
         obj[fileName] = JSON.parse(fs.readFileSync(dirname + file, "utf8"));

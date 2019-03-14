@@ -1,6 +1,14 @@
+*,
+::after,
+::before {
+  box-sizing: inherit;
+}
+
 html {
+  box-sizing: border-box;
   -ms-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -ms-overflow-style: scrollbar;
 }
 
 body {
@@ -23,11 +31,6 @@ body {
 a,
 button {
   transition: color $default-transition-time, background-color $default-transition-time, border-color $default-transition-time, box-shadow $default-transition-time;
-}
-
-.custom-scrollbar::-webkit-scrollbar {
-  width: rem(6px);
-  height: rem(6px);
 }
 
 p {

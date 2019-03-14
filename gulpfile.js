@@ -32,7 +32,6 @@ gulp.task("pug", () => {
 
   return gulp
     .src("src/pug/**/!(_)*.pug")
-    .pipe(p.changed("dist", { extension: ".html" }))
     .pipe(
       p.pug({
         locals: {
@@ -116,7 +115,7 @@ gulp.task("scripts", () => {
         /* Use stats to do more things if needed */
       })
     )
-    .pipe(gulp.dest("dist/js"));
+    .pipe(gulp.dest("dist"));
 });
 
 gulp.task("watch", () => {

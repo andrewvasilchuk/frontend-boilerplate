@@ -17,22 +17,14 @@
 }
 
 @mixin from-xs-to-lg() {
-  @if $is-em-media {
-    // Do some stuff
-  } @else {
-    @media (min-width: map-get($map: $grid-breakpoints, $key: xs)) and (max-width: map-get($map: $grid-breakpoints, $key: lg) - 0.02px) {
-      @content;
-    }
+  @media (min-width: map-get($map: $grid-breakpoints, $key: xs)) and (max-width: map-get($map: $grid-breakpoints, $key: lg) - 0.02px) {
+    @content;
   }
 }
 
 @mixin from-lg-to-xl() {
-  @if $is-em-media {
-    // Do some stuff
-  } @else {
-    @media (min-width: map-get($map: $grid-breakpoints, $key: lg)) and (max-width: map-get($map: $grid-breakpoints, $key: xl) - 0.02px) {
-      @content;
-    }
+  @media (min-width: map-get($map: $grid-breakpoints, $key: lg)) and (max-width: map-get($map: $grid-breakpoints, $key: xl) - 0.02px) {
+    @content;
   }
 }
 

@@ -29,19 +29,7 @@
 }
 
 @mixin input-placeholder {
-  &::-moz-placeholder {
-    @content;
-  }
-
-  &::-webkit-input-placeholder {
-    @content;
-  }
-
-  &:-moz-placeholder {
-    @content;
-  }
-
-  &:-ms-input-placeholder {
+  &::placeholder {
     @content;
   }
 }

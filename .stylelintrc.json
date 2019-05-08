@@ -1,4 +1,5 @@
 {
+  "processors": ["stylelint-processor-html"],
   "extends": ["stylelint-config-standard"],
   "plugins": ["stylelint-scss"],
   "rules": {
@@ -60,6 +61,8 @@
     "scss/operator-no-newline-before": true,
     "scss/declaration-nested-properties-no-divided-groups": true,
     "scss/dollar-variable-colon-newline-after": "always-multi-line",
-    "scss/at-if-closing-brace-space-after": "always-intermediate"
+    "scss/at-if-closing-brace-space-after": "always-intermediate",
+    "no-empty-source": null,
+    "declaration-colon-newline-after": null
   }
 }

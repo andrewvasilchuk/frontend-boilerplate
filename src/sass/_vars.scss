@@ -1,8 +1,8 @@
 $color-primary: null;
 $color-secondary: null;
-$grid-breakpoints: (xs: 0, /* sm: 576px, md: 768px, */ lg: 992px, xl: 1200px);
+$grid-breakpoints: (xs: 0, lg: 992px, xl: 1200px);
 $grid-gutter-width: 30px;
-$container-max-widths: (/*sm: 540px, md: 720px, */ lg: 960px, xl: 1140px);
+$container-max-widths: (lg: 960px, xl: 1140px);
 $base-font-family: sans-serif;
 $base-bg-color: #fff;
 $default-transition-time: 0.4s;

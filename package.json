@@ -37,13 +37,17 @@
     "gulp-uncss": "^1.0.6",
     "gulp-util": "^3.0.8",
     "html-webpack-plugin": "^4.0.0-beta.5",
+    "husky": "^2.2.0",
+    "lint-staged": "^8.1.6",
     "node-sass-glob-importer": "^5.3.0",
     "postcss-load-config": "^2.0.0",
     "postcss-loader": "^3.0.0",
+    "prettier": "^1.17.0",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
     "stylelint": "^9.9.0",
     "stylelint-config-standard": "^18.2.0",
+    "stylelint-processor-html": "^1.0.0",
     "stylelint-scss": "^3.4.4",
     "vinyl-ftp": "^0.6.1",
     "webpack": "^4.28.3",
@@ -54,12 +58,27 @@
   },
   "scripts": {
     "build:scripts": "webpack --config webpack/webpack.prod.js",
-    "stylelint": "npx stylelint src/sass/**/*.scss --fix",
-    "build": "gulp build && npm run build:scripts && gulp build:css",
+    "stylelint": "stylelint ./**/*.{scss,vue} --syntax scss",
+    "prettier": "prettier --write ./**/*.{js,vue}",
+    "build": "gulp build && npm run build:scripts && gulp build:css --fix",
     "deploy": "npm run build && gulp deploy",
-    "scripts:deploy": "npm run dev && gulp deploy",
     "webpack:stats": "webpack --profile --json > webpack-stats.json"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,css,json,md}": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.css": [
+      "stylelint",
+      "git add"
+    ]
+  }
 }
